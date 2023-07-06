@@ -1,30 +1,21 @@
 #!/usr/bin/python3
-"""
-Returns True if all the boxes can be opened, False otherwise.
-
-Args:
-    boxes: A list of integers representing the keys in each box.
-
-Returns:
-    True if all the boxes can be opened, False otherwise.
+"""A module for lockboxes.
 """
 
 
 def canUnlockAll(boxes):
-    '''
-    for i in range(len(boxes)):
-        if not(boxes[i] and (1 < i)):
-            return False
-    return True
+    '''Checks if all the boxes in a list of boxes containing the keys
+    (indices) to other boxes can be unlocked given that the first
+    box is unlocked.
     '''
     n = len(boxes)
-    opened_boxes = set([0])  # we start with box 0
-
-    for box in opened_boxes:
-        keys = boxes[box]  # keys in the current box
-
-        for key in keys:
-            if key < n and key not in opened_boxes:
-                opened_boxes.add(key)
-
-    return len(opened_boxes) == n
+    opened_boxes = set([0])
+    unopened_boxes = set(boxes[0]).difference(set([0]))
+    while len(unopened_boxes) > 0:
+        boxId = unopened_boxes.pop()
+        if not boxId or boxId >= n or boxId < 0:
+            continue
+        if boxId not in opened_boxes:
+            unopened_boxes = unopened_boxes.union(boxes[boxId])
+            opened_boxes.add(boxId)
+    return n == len(opened_boxes)
