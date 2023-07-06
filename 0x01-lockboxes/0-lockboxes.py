@@ -8,6 +8,8 @@ Args:
 Returns:
     True if all the boxes can be opened, False otherwise.
 """
+
+
 def canUnlockAll(boxes):
     '''
     for i in range(len(boxes)):
@@ -16,10 +18,10 @@ def canUnlockAll(boxes):
     return True
     '''
     n = len(boxes)
-    opened_boxes = set([0]) # we start with box 0
+    opened_boxes = set([0])  # we start with box 0
 
     for box in opened_boxes:
-        keys = boxes[box] # keys in the current box
+        keys = boxes[box]  # keys in the current box
 
         for key in keys:
             if key < n and key not in opened_boxes:
