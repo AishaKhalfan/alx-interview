@@ -30,6 +30,7 @@ In a text file, there is a single character ``H``. Your text editor can execute 
 
 Number of operations: ``6``
 
+```
 khalfan@aisha:~/0x02-minoperations$ cat 0-main.py
 #!/usr/bin/python3
 """
@@ -43,6 +44,7 @@ print("Min # of operations to reach {} char: {}".format(n, minOperations(n)))
 
 n = 12
 print("Min # of operations to reach {} char: {}".format(n, minOperations(n)))
+```
 
 ```
 khalfan@aisha:~/0x02-minoperations$
@@ -55,4 +57,4 @@ Repo:
 
 - GitHub repository: alx-interview
 - Directory: 0x02-minimum_operations
-- File: 0-minoperations.py [0-minoperations.py](./0-minoperations.py)
+- File:[0-minoperations.py](./0-minoperations.py)
