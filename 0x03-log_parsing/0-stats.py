@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import sys
 
+
 def compute_metrics():
     total_lines = 0
     total_chars = 0
@@ -13,6 +14,7 @@ def compute_metrics():
 
     return total_lines, total_chars, average_line_length
 
+
 if __name__ == "__main__":
     try:
         lines, chars, avg_length = compute_metrics()
@@ -23,4 +25,3 @@ if __name__ == "__main__":
         print("\nScript interrupted by user.")
     except Exception as e:
         print(f"Error: {e}")
-
