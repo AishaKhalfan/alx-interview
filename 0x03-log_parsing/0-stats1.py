@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+"""a script that reads stdin line by line and computes metrics"""
+
 import re
 import sys
 
@@ -5,8 +8,9 @@ import sys
 pattern = r'^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - \[(.*)\] "GET \/projects\/(\d+) HTTP\/1\.1" (\d{3}) (\d+)'
 
 # Initialize variables to store metrics
+
+status_codes = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
 total_size = 0
-status_counts = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
 lines_read = 0
 
 try:
