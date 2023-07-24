@@ -1,58 +1,45 @@
 #!/usr/bin/python3
-"""Write a script that reads stdin line by line and computes metrics
-    Input format: <IP Address> - [<date>] "GET /projects/260 HTTP/1.1"
-    <status code> <file size>
-    (if the format is not this one, the line must be skipped)
-    After every 10 lines and/or a keyboard interruption
-    (CTRL + C), print these statistics from the beginning
-"""
-
-
+"""This module contains the solution for the log parsing problem"""
 import sys
-import re
 
 
-def print_status_codes(status_codes_dict):
-    '''This print status code with its no.cof count.
+def print_status_codes(status_codes):
+    """Prints the status code with its count.
     Format:
         <status>: <count>
-    '''
-    for key, value in sorted(status_codes_dict.items()):
-        print("{}: {}".format(key, value))
+    """
+    for key, val in sorted(status_codes.items()):
+        print("{}: {}".format(key, val))
 
 
-status_codes_dict = {'200': 0, '301': 0, '400': 0, '401': 0, '403': 0,
-                     '404': 0, '405': 0, '500': 0}
-
-total_size = 0
-count = 0  # keep count of the number lines counted
+code = {}
+total = 0
+vals_total = 0
 
 try:
     for line in sys.stdin:
-        # Use regular expressions to extract status code and file size
-        match = re.match(r'.*\s"GET\s/projects/\d+"\s(\d+)\s(\d+)', line)
-        if match:
-            status_code = match.group(1)
-            file_size = int(match.group(2))
-            # check if the status code received exists in the dictionary and
-            # increment its count
-            if status_code in status_codes_dict.keys():
-                status_codes_dict[status_code] += 1
+        line_arr = line.split(" ")
 
-            # update total size
-            total_size += file_size
+        if len(line_arr) > 4:
+            file_size = int(line_arr[-1])
+            status = line_arr[-2]
 
-            # update count of lines
-            count += 1
+            if status not in code:
+                code[status] = 1
+            else:
+                code[status] += 1
 
-        if count == 10:
-            count = 0  # reset count
-            print('File size: {}'.format(total_size))
-            print_status_codes(status_codes_dict)
+            total += file_size
+            vals_total += 1
 
-except Exception as err:
+        if vals_total == 10:
+            vals_total = 0
+            print("File size: {}".format(total))
+            print_status_codes(code)
+
+except Exception:
     pass
 
 finally:
-    print('File size: {}'.format(total_size))
-    print_status_codes(status_codes_dict)
+    print("File size: {}".format(total))
+    print_status_codes(code)
