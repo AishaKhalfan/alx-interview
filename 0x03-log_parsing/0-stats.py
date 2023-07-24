@@ -51,17 +51,9 @@ try:
             print('File size: {}'.format(total_size))
             print_status_codes(status_codes_dict)
 
-            # print out status code counts
-            # for key, value in sorted(status_codes_dict.items()):
-                # if value != 0:
-                    # print('{}: {}'.format(key, value))
-
 except Exception as err:
     pass
 
 finally:
     print('File size: {}'.format(total_size))
     print_status_codes(status_codes_dict)
-    # for key, value in sorted(status_codes_dict.items()):
-        # if value != 0:
-            # print('{}: {}'.format(key, value))
