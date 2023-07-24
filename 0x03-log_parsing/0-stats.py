@@ -1,14 +1,15 @@
 #!/usr/bin/python3
-''' Write a script that reads stdin line by line and computes metrics
+"""Write a script that reads stdin line by line and computes metrics
     Input format: <IP Address> - [<date>] "GET /projects/260 HTTP/1.1"
     <status code> <file size>
     (if the format is not this one, the line must be skipped)
     After every 10 lines and/or a keyboard interruption
     (CTRL + C), print these statistics from the beginning
-'''
+"""
 
 
 import sys
+import re
 
 
 def print_status_codes(status_codes_dict):
@@ -28,13 +29,12 @@ count = 0  # keep count of the number lines counted
 
 try:
     for line in sys.stdin:
-        line_list = line.split(" ")
-
-        if len(line_list) > 4:
-            status_code = line_list[-2]
-            file_size = int(line_list[-1])
-
-            # check if the status code receive exists in the dictionary and
+        # Use regular expressions to extract status code and file size
+        match = re.match(r'.*\s"GET\s/projects/\d+"\s(\d+)\s(\d+)', line)
+        if match:
+            status_code = match.group(1)
+            file_size = int(match.group(2))
+            # check if the status code received exists in the dictionary and
             # increment its count
             if status_code in status_codes_dict.keys():
                 status_codes_dict[status_code] += 1
