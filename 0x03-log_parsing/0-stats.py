@@ -12,15 +12,14 @@ import sys
 
 
 def print_status_codes(status_codes_dict):
-    """This print status code with its no.cof count.
+    '''This print status code with its no.cof count.
     Format:
         <status>: <count>
-    """
+    '''
     for key, value in sorted(status_codes_dict.items()):
         print("{}: {}".format(key, value))
 
 
-'''store the count in a dictionary'''
 status_codes_dict = {'200': 0, '301': 0, '400': 0, '401': 0, '403': 0,
                      '404': 0, '405': 0, '500': 0}
 
