@@ -2,12 +2,23 @@
 ''' Write a script that reads stdin line by line and computes metrics
     Input format: <IP Address> - [<date>] "GET /projects/260 HTTP/1.1"
     <status code> <file size>
+    (if the format is not this one, the line must be skipped)
     After every 10 lines and/or a keyboard interruption
     (CTRL + C), print these statistics from the beginning
 '''
 
 
 import sys
+
+
+def print_status_codes(status_codes_dict):
+    """This print status code with its no.cof count.
+    Format:
+        <status>: <count>
+    """
+    for key, value in sorted(status_codes_dict.items()):
+        print("{}: {}".format(key, value))
+
 
 '''store the count in a dictionary'''
 status_codes_dict = {'200': 0, '301': 0, '400': 0, '401': 0, '403': 0,
@@ -38,17 +49,19 @@ try:
         if count == 10:
             count = 0  # reset count
             print('File size: {}'.format(total_size))
+            print_status_codes(status_codes_dict)
 
             # print out status code counts
-            for key, value in sorted(status_codes_dict.items()):
-                if value != 0:
-                    print('{}: {}'.format(key, value))
+            # for key, value in sorted(status_codes_dict.items()):
+                # if value != 0:
+                    # print('{}: {}'.format(key, value))
 
 except Exception as err:
     pass
 
 finally:
     print('File size: {}'.format(total_size))
-    for key, value in sorted(status_codes_dict.items()):
-        if value != 0:
-            print('{}: {}'.format(key, value))
+    print_status_codes(status_codes_dict)
+    # for key, value in sorted(status_codes_dict.items()):
+        # if value != 0:
+            # print('{}: {}'.format(key, value))
