@@ -1,123 +1,99 @@
 #!/usr/bin/python3
-"""
-NQUEENS
-"""
+
+""" N queens Interview Question """
 
 import sys
 
 
-def print_board(board):
-    """ print_board
-    Args:
-        board - list of list with length sys.argv[1]
+def get_size():
     """
-    new_list = []
-    for i, row in enumerate(board):
-        value = []
-        for j, col in enumerate(row):
-            if col == 1:
-                value.append(i)
-                value.append(j)
-        new_list.append(value)
-
-    print(new_list)
-
-
-def isSafe(board, row, col, number):
-    """ isSafe
-    Args:
-        board - list of list with length sys.argv[1]
-        row - row to check if is safe doing a movement in this position
-        col - col to check if is safe doing a movement in this position
-        number: size of the board
-    Return: True of False
+    Get the size of the board.
     """
-
-    # Check this row in the left side
-    for i in range(col):
-        if board[row][i] == 1:
-            return False
-
-    # Check upper diagonal on left side
-    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
-        if board[i][j] == 1:
-            return False
-
-    for i, j in zip(range(row, number, 1), range(col, -1, -1)):
-        if board[i][j] == 1:
-            return False
-
-    return True
+    arguments = sys.argv
+    if len(arguments) != 2:
+        print('Usage: nqueens N')
+        sys.exit(1)
+    try:
+        n = int(arguments[1])
+        if n < 4:
+            print('N must be at least 4')
+            sys.exit(1)
+    except ValueError:
+        print('N must be an integer')
+        sys.exit(1)
+    return n
 
 
-def solveNQUtil(board, col, number):
-    """ Auxiliar method to find the posibilities of answer
-    Args:
-        board - Board to resolve
-        col - Number of col
-        number - size of the board
-    Returns:
-        All the posibilites to solve the problem
+def unsafe_position(
+        board,
+        row,
+        col,
+        current) -> bool:
+    """
+    If the queen is in the same column, or in the same diagonal,
+    as any other queen, then it's unsafe
+
+    :param board: the current board
+    :type board: List[List[str]]
+    :param row: the row we're currently on
+    :type row: int
+    :param col: the column we're currently trying to place a queen in
+    :type col: int
+    :param current: the current row we are on
+    :type current: int
+    :return: True or False
     """
 
-    if (col == number):
-        print_board(board)
+    if (board[row] == col) or \
+        (board[row] == col - row + current) or\
+            (board[row] == row - current + col):
         return True
-    res = False
-    for i in range(number):
-
-        if (isSafe(board, i, col, number)):
-
-            # Place this queen in board[i][col]
-            board[i][col] = 1
-
-            # Make result true if any placement
-            # is possible
-            res = solveNQUtil(board, col + 1, number) or res
-
-            board[i][col] = 0  # BACKTRACK
-
-    return res
+    return False
 
 
-def solve(number):
-    """ Find all the posibilities if exists
-    Args:
-        number - size of the board
+def print_board(board, n):
     """
-    board = [[0 for i in range(number)]for i in range(number)]
+    It takes a board and an n, and returns a list of the
+    coordinates of the queens on the board
 
-    if not solveNQUtil(board, 0, number):
-        return False
-
-    return True
-
-
-def validate(args):
-    """ Validate the input data to verify if the size to
-        answer is posible
-    Args:
-        args - sys.argv
+    :param board: a list of integers, where each integer
+    represents the column of the queen in that row
+    :param n: the number of queens
     """
-    if (len(args) == 2):
-        # Validate data
-        try:
-            number = int(args[1])
-        except Exception:
-            print("N must be a number")
-            exit(1)
-        if number < 4:
-            print("N must be at least 4")
-            exit(1)
-        return number
+
+    result = []
+
+    for i in range(n):
+        for j in range(n):
+            if j == board[i]:
+                result.append([i, j])
+    print(result)
+
+
+def fill_positions(board, row,  n):
+    """
+    For each row, try each column, and if it's safe, recurse on the next row
+
+    :param board: the chess board
+    :param row: the row we are currently on
+    :param n: the size of the board
+    """
+
+    if row == n:
+        print_board(board, n)
     else:
-        print("Usage: nqueens N")
-        exit(1)
+
+        for j in range(n):
+            is_safe = True
+            for i in range(row):
+                if unsafe_position(board, i, j, row):
+                    is_safe = False
+            if is_safe:
+                board[row] = j
+                fill_positions(board, row + 1, n)
 
 
-if __name__ == "__main__":
-    """ Main method to execute the application
-    """
-
-    number = validate(sys.argv)
-    solve(number)
+if __name__ == '__main__':
+    board_size = get_size()
+    initial_list = [0] * board_size
+    fill_positions(initial_list, 0, board_size)
