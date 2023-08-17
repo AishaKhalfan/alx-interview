@@ -1,22 +1,10 @@
-#!/usr/bin/python3
-"""
-0x07 - Rotate 2D Matrix
-"""
 import numpy as np
 
 def rotate_2d_matrix(matrix):
-    """
-    Given an n x n 2D matrix, rotate it
-    90 degrees clockwise.
-    """
-    n = len(matrix)
+  rotated = np.array(matrix)
 
-    # Transpose the matrix
-    for i in range(n):
-        for j in range(i, n):
-            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
-
-    # Reverse rows
-    for i in range(n):
-        matrix[i].reverse()
-    
+  # In-place swap of rows and columns
+  np.rot90(rotated, k=1, axes=(0,1))
+  
+  # Override original matrix
+  matrix[:] = rotated
