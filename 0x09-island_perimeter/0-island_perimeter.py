@@ -22,7 +22,6 @@ def island_perimeter(grid):
     # iterate through each row and column
     for x in range(0, row_length):
         for y in range(0, column_length):
-
             # find out when we have a   1
             if grid[x][y] == 1:
                 perimeter += 4
